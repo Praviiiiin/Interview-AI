@@ -5,7 +5,6 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GOOGLE_GENAI_API_KEY
 })
 
-// ✅ Plain JSON schema — no $ref, no $defs
 const interviewReportSchema = {
     type: "object",
     properties: {
@@ -99,3 +98,12 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
 }
 
 module.exports = generateInterviewReport
+
+
+
+
+
+
+
+
+
