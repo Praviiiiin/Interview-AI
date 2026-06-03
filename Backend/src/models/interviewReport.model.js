@@ -19,7 +19,7 @@ const technicalQuestionSchema = new mongoose.Schema({
 })
 
 const behavioralQuestionSchema = new mongoose.Schema({
-        question: {
+    question: {
         type: String,
         required: [true, "Technical question is required"]
     },
