@@ -1,5 +1,4 @@
 const { GoogleGenAI } = require("@google/genai")
-const z = require("zod")
 
 const ai = new GoogleGenAI({
     apiKey: process.env.GOOGLE_GENAI_API_KEY
@@ -8,6 +7,10 @@ const ai = new GoogleGenAI({
 const interviewReportSchema = {
     type: "object",
     properties: {
+        title: {
+            type: "string",
+            description: "The job title extracted from the job description"
+        },
         matchScore: {
             type: "number",
             description: "A score between 0 and 100 indicating how well the candidate's resume matches the job description"
@@ -72,7 +75,7 @@ const interviewReportSchema = {
             }
         }
     },
-    required: ["matchScore", "technicalQuestions", "behavioralQuestions", "skillGaps", "preparationPlan"]
+    required: ["title", "matchScore", "technicalQuestions", "behavioralQuestions", "skillGaps", "preparationPlan"]
 }
 
 async function generateInterviewReport({ resume, selfDescription, jobDescription }) {
@@ -84,7 +87,7 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
     `
 
     const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: "gemini-2.5-flash",  
         contents: prompt,
         config: {
             responseMimeType: "application/json",
@@ -98,12 +101,3 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
 }
 
 module.exports = generateInterviewReport
-
-
-
-
-
-
-
-
-
