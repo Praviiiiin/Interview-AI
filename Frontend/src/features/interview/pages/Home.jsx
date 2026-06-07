@@ -1,10 +1,35 @@
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import "../style/home.scss"
+import { useInterview } from '../hooks/useInterview.js'
+import { useNavigate } from 'react-router'  
 
 const Home = () => {
-    const [jobDesc, setJobDesc] = useState("")
-    const [selfDesc, setSelfDesc] = useState("")
-    const [fileName, setFileName] = useState(null)
+
+    const { loading, generateReport } = useInterview()
+    const [jobDescription, setJobDescription] = useState("")
+    const [selfDescription, setSelfDescription] = useState("")
+    const [fileName, setFileName] = useState(null)  
+    const resumeInputRef = useRef()
+    const navigate = useNavigate()
+
+    if (loading) {
+        return (
+            <main className='loading-screen'>
+                <h1>Loading your interview plan..</h1>
+            </main>
+        )
+    }
+
+    const handleGenerateReport = async () => {
+        const resumeFile = resumeInputRef.current.files[0]
+        const data = await generateReport({ jobDescription, selfDescription, resumeFile })
+        console.log("data:", data)
+        if (!data) {
+            alert("Report generation failed - check backend terminal")
+            return
+        }
+        navigate(`/interview/${data._id}`)  
+    }
 
     const handleFileChange = (e) => {
         if (e.target.files[0]) setFileName(e.target.files[0].name)
@@ -24,7 +49,7 @@ const Home = () => {
                 </div>
 
                 <div className="interview-input-group">
-                    
+
                     <div className="left panel">
                         <div className="panel-header">
                             <div className="panel-title">
@@ -34,17 +59,16 @@ const Home = () => {
                             <span className="badge required">Required</span>
                         </div>
                         <textarea
+                            onChange={(e) => setJobDescription(e.target.value)}
                             name="jobDescription"
                             id="jobDescription"
                             placeholder={"Paste the full job description here...\ne.g. 'Senior Frontend Engineer at Google requires proficiency in React, TypeScript, and large-scale system design...'"}
-                            value={jobDesc}
-                            onChange={(e) => setJobDesc(e.target.value)}
+                            value={jobDescription}
                             maxLength={5000}
                         />
-                        <div className="char-count">{jobDesc.length} / 5000 chars</div>
+                        <div className="char-count">{jobDescription.length} / 5000 chars</div>
                     </div>
 
-                    
                     <div className="right panel">
                         <div className="panel-header">
                             <div className="panel-title">
@@ -70,6 +94,7 @@ const Home = () => {
                                 <p className="drop-sub">PDF or DOCX (Max 5MB)</p>
                             </label>
                             <input
+                                ref={resumeInputRef}
                                 hidden
                                 type="file"
                                 name="resume"
@@ -84,11 +109,11 @@ const Home = () => {
                         <div className="input-group">
                             <label className="group-label" htmlFor="selfDescription">Quick Self-Description</label>
                             <textarea
+                                onChange={(e) => setSelfDescription(e.target.value)}
                                 name="selfDescription"
                                 id="selfDescription"
                                 placeholder="Briefly describe your experience, key skills, and years of experience if you don't have a resume handy..."
-                                value={selfDesc}
-                                onChange={(e) => setSelfDesc(e.target.value)}
+                                value={selfDescription}
                             />
                         </div>
 
@@ -101,7 +126,7 @@ const Home = () => {
 
                 <div className="footer-bar">
                     <span className="footer-note">AI-Powered Strategy Generation • Approx 30s</span>
-                    <button className="generate-btn">✦ Generate My Interview Strategy</button>
+                    <button onClick={handleGenerateReport} className="generate-btn">✦ Generate My Interview Strategy</button>
                 </div>
             </div>
         </main>
