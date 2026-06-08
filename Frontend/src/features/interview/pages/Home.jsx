@@ -1,24 +1,20 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import "../style/home.scss"
 import { useInterview } from '../hooks/useInterview.js'
 import { useNavigate } from 'react-router'  
 
 const Home = () => {
 
-    const { loading, generateReport } = useInterview()
+    const { generateReport, reports, getReports } = useInterview()  
     const [jobDescription, setJobDescription] = useState("")
     const [selfDescription, setSelfDescription] = useState("")
     const [fileName, setFileName] = useState(null)  
     const resumeInputRef = useRef()
     const navigate = useNavigate()
 
-    if (loading) {
-        return (
-            <main className='loading-screen'>
-                <h1>Loading your interview plan..</h1>
-            </main>
-        )
-    }
+    useEffect(() => {
+        getReports()
+    }, [])
 
     const handleGenerateReport = async () => {
         const resumeFile = resumeInputRef.current.files[0]
@@ -128,6 +124,22 @@ const Home = () => {
                     <span className="footer-note">AI-Powered Strategy Generation • Approx 30s</span>
                     <button onClick={handleGenerateReport} className="generate-btn">✦ Generate My Interview Strategy</button>
                 </div>
+
+                {reports.length > 0 && (
+                    <section className='recent-reports'>
+                        <h2>My Recent Interview Plans</h2>
+                        <ul className='reports-list'>
+                            {reports.map(report => (
+                                <li key={report._id} className='report-item' onClick={() => navigate(`/interview/${report._id}`)}>
+                                    <h3>{report.title || 'Untitled Position'}</h3>
+                                    <p className='report-meta'>Generated on {new Date(report.createdAt).toLocaleDateString()}</p>
+                                    <p className={`match-score ${report.matchScore >= 80 ? 'score-high' : report.matchScore >= 60 ? 'score-mid' : 'score-low'}`}>Match Score:</p> {report.matchScore}%
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                )}
+
             </div>
         </main>
     )
