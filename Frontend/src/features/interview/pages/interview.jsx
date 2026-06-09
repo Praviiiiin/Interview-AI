@@ -75,7 +75,7 @@ const MatchScoreRing = ({ score }) => {
 
 const Interview = () => {
     const [activeTab, setActiveTab] = useState("technical")
-    const { report, getReportById } = useInterview()  
+    const { report, getReportById, getResumePdf } = useInterview()  
     const { interviewId } = useParams()                
 
     useEffect(() => {
@@ -84,6 +84,11 @@ const Interview = () => {
             getReportById(interviewId)  
         }
     }, [interviewId])
+    
+    const handleDownloadResume = () => {
+        getResumePdf(interviewId)
+    }
+    
 
     if (!report) return <div className="loading">Loading your report...</div>
 
@@ -152,16 +157,23 @@ const Interview = () => {
                 <nav className="sidebar">
                     <p className="sidebar-label">Sections</p>
                     {NAV.map(({ key, icon, label, count }) => (
-                        <div
-                            key={key}
-                            className={`sidebar-item ${activeTab === key ? "active" : ""}`}
-                            onClick={() => setActiveTab(key)}
-                        >
-                            <span className="item-icon">{icon}</span>
-                            {label}
-                            <span className="item-count">{count}</span>
-                        </div>
+                        <React.Fragment key={key}>
+                            <div
+                                className={`sidebar-item ${activeTab === key ? "active" : ""}`}
+                                onClick={() => setActiveTab(key)}
+                            >
+                                <span className="item-icon">{icon}</span>
+                                {label}
+                                <span className="item-count">{count}</span>
+                            </div>
+                        </React.Fragment>
                     ))}
+                    <button
+                        onClick={() => getResumePdf(interviewId)}
+                        className="download-btn"
+                    >
+                        Download Resume
+                    </button>
                 </nav>
 
                 <main className="main-content">
