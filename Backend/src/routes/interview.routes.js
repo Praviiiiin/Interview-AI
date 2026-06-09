@@ -18,4 +18,6 @@ interviewRouter.get("/report/:interviewId", authUser, interviewController.genera
 
 interviewRouter.get("/", authUser, interviewController.getAllInterviewReportsController)
 
+interviewRouter.post("/resume/pdf/:interviewReportId", authUser, interviewController.generateResumePdfController)
+
 module.exports = interviewRouter
