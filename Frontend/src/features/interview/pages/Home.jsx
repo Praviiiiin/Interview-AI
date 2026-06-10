@@ -132,9 +132,16 @@ const Home = () => {
                             {reports.map(report => (
                                 <li key={report._id} className='report-item' onClick={() => navigate(`/interview/${report._id}`)}>
                                     <h3>{report.title || 'Untitled Position'}</h3>
-                                    <p className='report-meta'>Generated on {new Date(report.createdAt).toLocaleDateString()}</p>
-                                    <p className={`match-score ${report.matchScore >= 80 ? 'score-high' : report.matchScore >= 60 ? 'score-mid' : 'score-low'}`}>Match Score:</p> {report.matchScore}%
-                                </li>
+                                    <p className='report-meta'>
+                                        {new Date(report.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                     </p>
+                                     <div className="card-footer">
+                                            <span className="score-label">Match</span>
+                                            <span className={`score-badge ${report.matchScore >= 80 ? 'score-high' : report.matchScore >= 60 ? 'score-mid' : 'score-low'}`}>
+                                                {report.matchScore}%
+                                             </span>
+                                        </div>
+                                    </li>
                             ))}
                         </ul>
                     </section>
