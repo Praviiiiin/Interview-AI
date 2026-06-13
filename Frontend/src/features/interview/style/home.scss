@@ -5,6 +5,7 @@
     justify-content: center;
     align-items: flex-start;
     padding: 3rem 1.5rem;
+    z-index: 1;
 
     .home-wrapper {
         width: 100%;
@@ -206,46 +207,6 @@
         }
     }
 
-    .recent-reports {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75;
-        width: 100%;
-        max-width: 900px;
-
-        .reports-list {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-
-            .report-item {
-                background-color: #1a1f27;
-                border: 1px solid 1px solid #2a2f3a;
-                border-radius: 0.5rem;
-                padding: 1rem;
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                gap: 0.5rem;
-                cursor: pointer;
-                transition: border-color 0.2s;
-                flex-shrink: 0;
-
-                &:hover {
-                    border-color: #d20d3b;
-
-                    .match-score {
-                        font-size: 0.8rem;
-                        font-weight: 600;
-                        color: beige;
-                        align-items: flex-start; 
-                    }
-                }
-            }
-
-        }
-    }
-
     .footer-bar {
         display: flex;
         justify-content: space-between;
@@ -273,5 +234,113 @@
         &:hover {
             background-color: #b00a32;
         }
+    }
+
+    // ── Recent Reports ──────────────────────────────────────────
+
+    .recent-reports {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+
+        h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #f0f0f0;
+        }
+
+        .reports-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 0.875rem;
+            list-style: none;
+            padding: 0;
+
+            .report-item {
+                background-color: #161b24;
+                border: 1px solid #21283a;
+                border-radius: 10px;
+                padding: 1rem 1.1rem 0.9rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.4rem;
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
+                transition: border-color 0.18s, transform 0.15s;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    height: 3px;
+                    background: linear-gradient(90deg, #d20d3b, #ff4d6d);
+                    opacity: 0;
+                    transition: opacity 0.18s;
+                }
+
+                &:hover {
+                    border-color: #d20d3b;
+                    transform: translateY(-2px);
+
+                    &::before {
+                        opacity: 1;
+                    }
+                }
+
+                h3 {
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    color: #e8eaf0;
+                    line-height: 1.4;
+                }
+
+                .report-meta {
+                    font-size: 0.72rem;
+                    color: #4a5168;
+                }
+            }
+        }
+    }
+
+    .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+        padding-top: 0.5rem;
+        border-top: 1px solid #1e2535;
+    }
+
+    .score-label {
+        font-size: 0.7rem;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .score-badge {
+        font-size: 0.85rem;
+        font-weight: 700;
+        padding: 0.2rem 0.55rem;
+        border-radius: 6px;
+    }
+
+    .score-high {
+        background: rgba(16, 185, 89, 0.12);
+        color: #34d399;
+    }
+
+    .score-mid {
+        background: rgba(245, 158, 11, 0.12);
+        color: #fbbf24;
+    }
+
+    .score-low {
+        background: rgba(210, 13, 59, 0.12);
+        color: #f87171;
     }
 }
