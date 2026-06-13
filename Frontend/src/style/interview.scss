@@ -6,6 +6,8 @@
     background-color: #0d1117;
     color: whitesmoke;
     font-family: system-ui;
+    position: relative;
+    z-index: 1;
 
     .interview-topbar {
         display: flex;
@@ -61,6 +63,7 @@
         flex-direction: column;
         gap: 0.25rem;
         background-color: #0d1117;
+        overflow-y: auto;
 
         .sidebar-label {
             font-size: 0.65rem;
@@ -116,6 +119,24 @@
                     border-color: rgba(210, 13, 59, 0.3);
                     color: #d20d3b;
                 }
+            }
+        }
+
+        .download-btn {
+            margin: auto 1.25rem 0;
+            padding: 0.65rem 1rem;
+            background-color: #d20d3b;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.825rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: system-ui;
+            transition: background-color 0.2s;
+
+            &:hover {
+                background-color: #b00a32;
             }
         }
     }
@@ -444,6 +465,7 @@
                 }
             }
         }
+
         .stats-grid {
             display: flex;
             flex-direction: column;
